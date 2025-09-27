@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Тестовое задание</string>
+    <string name="title_activity_game">"Экран сессии"</string>
+    <string name="Attack">Атаковать</string>
+    <string name="Heal">Исцелиться</string>
+    <string name="Battle">Бой</string>
+    <string name="GamerAndMonsters">Игрок и Монстры</string>
+    <string name="StartGame">Начать игру</string>
+    <string name="Quit">Выйти</string>
+</resources>
