@@ -1,10 +1,21 @@
 <resources>
-    <string name="app_name">Тестовое задание</string>
-    <string name="title_activity_game">"Экран сессии"</string>
-    <string name="Attack">Атаковать</string>
-    <string name="Heal">Исцелиться</string>
-    <string name="Battle">Бой</string>
-    <string name="GamerAndMonsters">Игрок и Монстры</string>
-    <string name="StartGame">Начать игру</string>
-    <string name="Quit">Выйти</string>
+    <string name="app_name">Test Task</string>
+    <string name="title_activity_game">Session View</string>
+    <string name="attack">Attack</string>
+    <string name="battle">Battle</string>
+    <string name="gamer_n_monsters">Gamer And Monsters</string>
+    <string name="heal">Heal</string>
+    <string name="start_game">Start Game</string>
+    <string name="quit">Quit</string>
+    <string name="game_over">Game Over</string>
+    <string name="new_game">New Game</string>
+    <string name="lost_message">You lost. Want to play again?</string>
+    <string name="game_win">Victory!</string>
+    <string name="win_message">You\'ve defeated all the monsters! Want to play again?</string>
+    <string name="player">Gamer</string>
+    <string name="health">Health</string>
+    <string name="defense">Defense</string>
+    <string name="damage">Damage</string>
+    <string name="heals_count">Heals</string>
+    <string name="monster">Monster</string>
 </resources>

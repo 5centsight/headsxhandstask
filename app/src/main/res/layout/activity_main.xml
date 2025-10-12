@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/GamerAndMonsters"
+        android:text="@string/gamer_n_monsters"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginBottom="32dp"/>
@@ -18,13 +18,13 @@
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/StartGame"
+        android:text="@string/start_game"
         android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/exitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Quit"/>
+        android:text="@string/quit" />
 
 </LinearLayout>

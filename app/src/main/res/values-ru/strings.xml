@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Тестовое задание</string>
+    <string name="title_activity_game">Экран сессии</string>
+    <string name="attack">Атаковать</string>
+    <string name="heal">Исцелиться</string>
+    <string name="battle">Бой</string>
+    <string name="gamer_n_monsters">Игрок и Монстры</string>
+    <string name="start_game">Начать игру</string>
+    <string name="quit">Выйти</string>
+    <string name="game_over">Игра окончена</string>
+    <string name="new_game">Новая игра</string>
+    <string name="lost_message">Вы проиграли. Хотите сыграть еще?</string>
+    <string name="game_win">Победа!</string>
+    <string name="win_message">Вы победили всех монстров! Хотите сыграть еще?</string>
+    <string name="player">Игрок</string>
+    <string name="health">Здоровье</string>
+    <string name="defense">Защита</string>
+    <string name="damage">Атака</string>
+    <string name="heals_count">Исцелений</string>
+    <string name="monster">Монстр</string>
+</resources>

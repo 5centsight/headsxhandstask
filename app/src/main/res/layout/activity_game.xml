@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Battle"
+        android:text="@string/battle"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -68,7 +68,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/Attack"
+            android:text="@string/attack"
             style="?android:attr/buttonBarButtonStyle" />
 
         <Button
@@ -76,7 +76,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/Heal"
+            android:text="@string/heal"
             android:layout_marginStart="8dp"
             style="?android:attr/buttonBarButtonStyle" />
 

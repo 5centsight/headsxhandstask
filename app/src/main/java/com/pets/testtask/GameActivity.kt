@@ -65,20 +65,20 @@ class GameActivity : AppCompatActivity() {
 
     private fun showGameOverDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Игра окончена")
-            .setMessage("Вы проиграли. Хотите сыграть еще?")
-            .setPositiveButton("Новая игра") { _, _ -> startNewGame() }
-            .setNegativeButton("Выйти") { _, _ -> finish() }
+            .setTitle(getString(R.string.game_over))
+            .setMessage(getString(R.string.lost_message))
+            .setPositiveButton(getString(R.string.new_game)) { _, _ -> startNewGame() }
+            .setNegativeButton(getString(R.string.quit)) { _, _ -> finish() }
             .setCancelable(false)
             .show()
     }
 
     private fun showVictoryDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Победа!")
-            .setMessage("Вы победили всех монстров! Хотите сыграть еще?")
-            .setPositiveButton("Новая игра") { _, _ -> startNewGame() }
-            .setNegativeButton("Выйти") { _, _ -> finish() }
+            .setTitle(getString(R.string.game_win))
+            .setMessage(getString(R.string.win_message))
+            .setPositiveButton(getString(R.string.new_game)) { _, _ -> startNewGame() }
+            .setNegativeButton(getString(R.string.quit)) { _, _ -> finish() }
             .setCancelable(false)
             .show()
     }
@@ -88,21 +88,21 @@ class GameActivity : AppCompatActivity() {
 
         state.player.let { player ->
             playerStatsTextView.text = """
-                Игрок: ${player.name}
-                Здоровье: ${player.health}/${player.maxHealth}
-                Атака: ${player.attack}
-                Защита: ${player.defense}
-                Исцелений: ${player.healCount}
+                ${getString(R.string.player)}: ${player.name}
+                ${getString(R.string.health)}: ${player.health}/${player.maxHealth}
+                ${getString(R.string.damage)}: ${player.attack}
+                ${getString(R.string.defense)}: ${player.defense}
+                ${getString(R.string.heals_count)}: ${player.healCount}
             """.trimIndent()
 
         }
 
         state.currentMonster?.let { monster ->
             monsterStatsTextView.text = """
-                Монстр: ${monster.name}
-                Здоровье: ${monster.health}/${monster.maxHealth}
-                Атака: ${monster.attack}
-                Защита: ${monster.defense}
+                ${getString(R.string.monster)}: ${monster.name}
+                ${getString(R.string.health)}: ${monster.health}/${monster.maxHealth}
+                ${getString(R.string.damage)}: ${monster.attack}
+                ${getString(R.string.defense)}: ${monster.defense}
             """.trimIndent()
         } ?: run {
             monsterStatsTextView.text = "Все монстры побеждены!"
