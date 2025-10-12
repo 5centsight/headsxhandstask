@@ -1,6 +1,7 @@
 package com.pets.testtask.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pets.testtask.model.DamageRange
 import com.pets.testtask.model.Monster
 import com.pets.testtask.model.Player
@@ -9,6 +10,8 @@ import com.pets.testtask.state.GameState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class GameViewModel : ViewModel() {
 
@@ -16,47 +19,52 @@ class GameViewModel : ViewModel() {
     val gameState: StateFlow<GameState> = _gameState.asStateFlow()
 
     fun setupSession() {
-        val player = createPlayer()
         val monsters = createMonsters()
         _gameState.value = GameState(
-            player = player,
+            player = createPlayer(),
             monsters = monsters,
+            currentMonsterIndex = 0,
             currentMonster = monsters.firstOrNull(),
+            isGameOver = false,
+            isVictory = false,
             gameLog = listOf("Игра началась!", "Вы встретили ${monsters.firstOrNull()?.name}а")
         )
     }
 
     fun performAttack() {
-        val currentState = _gameState.value
-        if (currentState.isGameOver || currentState.isVictory) return
+        viewModelScope.launch {
+            val currentState = _gameState.value
 
-        val playerResult = playerAttack()
-        handleAttackResult(currentState.player.name, playerResult)
-
-        val updatedState = _gameState.value
-        if (updatedState.currentMonster?.isAlive() == true && !updatedState.isGameOver) {
-            val monster = updatedState.currentMonster
-            val monsterResult = monsterAttack()
-            handleAttackResult(monster.name, monsterResult)
-        }
-
-        checkGameEnd()
-    }
-
-    fun performHeal() {
-        val currentState = _gameState.value
-        if (currentState.player.useHeal()) {
-            addToLog("Вы исцелились! Осталось исцелений: ${currentState.player.healCount}")
+            val playerResult = playerAttack()
+            handleAttackResult(currentState.player.name, playerResult)
 
             val updatedState = _gameState.value
-            val monster = updatedState.currentMonster
-            if (monster != null && monster.isAlive()) {
+            if (updatedState.currentMonster?.isAlive() == true && !updatedState.isGameOver) {
+                val monster = updatedState.currentMonster
                 val monsterResult = monsterAttack()
                 handleAttackResult(monster.name, monsterResult)
             }
+
             checkGameEnd()
-        } else {
-            addToLog("Нельзя исцелиться!")
+        }
+    }
+
+    fun performHeal() {
+        viewModelScope.launch {
+            val currentState = _gameState.value
+            if (currentState.player.useHeal()) {
+                addToLog("Вы исцелились! Осталось исцелений: ${currentState.player.healCount}")
+
+                val updatedState = _gameState.value
+                val monster = updatedState.currentMonster
+                if (monster != null && monster.isAlive()) {
+                    val monsterResult = monsterAttack()
+                    handleAttackResult(monster.name, monsterResult)
+                }
+                checkGameEnd()
+            } else {
+                addToLog("Нельзя исцелиться!")
+            }
         }
     }
 
@@ -121,7 +129,7 @@ class GameViewModel : ViewModel() {
     private fun createMonsters(): List<Monster> {
         val monsterNames = listOf("Гоблин", "Орк", "Тролль", "Лич", "Дракон")
         return monsterNames.map { name ->
-                Monster(
+            Monster(
                 name = name,
                 attack = (1..30).random(),
                 defense = (1..30).random(),
@@ -154,33 +162,26 @@ class GameViewModel : ViewModel() {
             currentMonsterIndex = nextIndex,
             currentMonster = nextMonster
         )
-        if (nextMonster != null) {
+        nextMonster?.let {
             addToLog("Вы встретили ${nextMonster.name}а")
         }
     }
 
     private fun addToLog(message: String) {
-        val currentState = _gameState.value
-        _gameState.value = currentState.copy(
-            gameLog = currentState.gameLog + message
-        )
+        _gameState.update { currentState ->
+            currentState.copy(
+                gameLog = currentState.gameLog + message
+            )
+        }
     }
 
     private fun checkGameEnd() {
-        val currentState = _gameState.value
-        val isGameOver = !currentState.player.isAlive()
-        val isVictory =
-            currentState.currentMonsterIndex >= currentState.monsters.size && currentState.player.isAlive()
-
-        _gameState.value = currentState.copy(
-            isGameOver = isGameOver,
-            isVictory = isVictory
-        )
-
-        if (isGameOver) {
-            addToLog("Игра окончена! Вы проиграли!")
-        } else if (isVictory) {
-            addToLog("Поздравляем! Вы победили всех монстров!")
+        _gameState.update { currentState ->
+            currentState.copy(
+                isGameOver = !currentState.player.isAlive(),
+                isVictory = currentState.currentMonsterIndex >=
+                        currentState.monsters.size && currentState.player.isAlive()
+            )
         }
     }
 }

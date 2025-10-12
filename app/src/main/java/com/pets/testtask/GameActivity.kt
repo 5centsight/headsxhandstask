@@ -8,8 +8,12 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.pets.testtask.state.GameState
 import com.pets.testtask.viewmodel.GameViewModel
+import kotlinx.coroutines.launch
 
 
 class GameActivity : AppCompatActivity() {
@@ -25,8 +29,22 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+        setupObservers()
         initializeViews()
-        startNewGame()
+
+        if (savedInstanceState == null) {
+            startNewGame()
+        }
+    }
+
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.gameState.collect { state ->
+                    updateUI(state)
+                }
+            }
+        }
     }
 
     private fun initializeViews() {
@@ -37,23 +55,12 @@ class GameActivity : AppCompatActivity() {
         attackButton = findViewById(R.id.attackButton)
         healButton = findViewById(R.id.healButton)
 
-        attackButton.setOnClickListener { onAttack() }
-        healButton.setOnClickListener { onHeal() }
+        attackButton.setOnClickListener { viewModel.performAttack() }
+        healButton.setOnClickListener { viewModel.performHeal() }
     }
 
     private fun startNewGame() {
         viewModel.setupSession()
-        updateUI(viewModel.gameState.value)
-    }
-
-    private fun onAttack() {
-        viewModel.performAttack()
-        updateUI(viewModel.gameState.value)
-    }
-
-    private fun onHeal() {
-        viewModel.performHeal()
-        updateUI(viewModel.gameState.value)
     }
 
     private fun showGameOverDialog() {
@@ -79,22 +86,25 @@ class GameActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun updateUI(state: GameState) {
 
-        playerStatsTextView.text = """
-            Игрок: ${state.player.name}
-            Здоровье: ${state.player.health}/${state.player.maxHealth}
-            Атака: ${state.player.attack}
-            Защита: ${state.player.defense}
-            Исцелений: ${state.player.healCount}
-        """.trimIndent()
-
-        if (state.currentMonster != null) {
-            monsterStatsTextView.text = """
-                Монстр: ${state.currentMonster.name}
-                Здоровье: ${state.currentMonster.health}/${state.currentMonster.maxHealth}
-                Атака: ${state.currentMonster.attack}
-                Защита: ${state.currentMonster.defense}
+        state.player.let { player ->
+            playerStatsTextView.text = """
+                Игрок: ${player.name}
+                Здоровье: ${player.health}/${player.maxHealth}
+                Атака: ${player.attack}
+                Защита: ${player.defense}
+                Исцелений: ${player.healCount}
             """.trimIndent()
-        } else {
+
+        }
+
+        state.currentMonster?.let { monster ->
+            monsterStatsTextView.text = """
+                Монстр: ${monster.name}
+                Здоровье: ${monster.health}/${monster.maxHealth}
+                Атака: ${monster.attack}
+                Защита: ${monster.defense}
+            """.trimIndent()
+        } ?: run {
             monsterStatsTextView.text = "Все монстры побеждены!"
         }
 

@@ -17,4 +17,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TestTask"
 include(":app")
- 
+include(":tests")

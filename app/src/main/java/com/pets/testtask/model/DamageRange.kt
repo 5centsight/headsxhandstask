@@ -1,6 +1,6 @@
 package com.pets.testtask.model
 
-data class DamageRange(val min: Int, val max: Int) {
+data class DamageRange(val min: Int = 1, val max: Int = 1) {
 
     init {
         require(min in 1..max) { "Некорректный диапазон урона: $min-$max" }
