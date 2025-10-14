@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Test Task</string>
-    <string name="title_activity_game">Session View</string>
     <string name="attack">Attack</string>
     <string name="battle">Battle</string>
     <string name="gamer_n_monsters">Gamer And Monsters</string>
@@ -18,4 +17,5 @@
     <string name="damage">Damage</string>
     <string name="heals_count">Heals</string>
     <string name="monster">Monster</string>
+    <string name="monsters_defeated">Every monsters are defeated!</string>
 </resources>

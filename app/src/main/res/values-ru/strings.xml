@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Тестовое задание</string>
-    <string name="title_activity_game">Экран сессии</string>
     <string name="attack">Атаковать</string>
     <string name="heal">Исцелиться</string>
     <string name="battle">Бой</string>
@@ -19,4 +18,5 @@
     <string name="damage">Атака</string>
     <string name="heals_count">Исцелений</string>
     <string name="monster">Монстр</string>
+    <string name="monsters_defeated">Все монстры побеждены!</string>
 </resources>

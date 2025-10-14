@@ -10,14 +10,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/gamer_n_monsters"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.Material3.DisplayMedium.Emphasized"
         android:layout_marginBottom="32dp"/>
 
     <Button
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
         android:text="@string/start_game"
         android:layout_marginBottom="16dp"/>
 
@@ -25,6 +26,7 @@
         android:id="@+id/exitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
         android:text="@string/quit" />
 
 </LinearLayout>

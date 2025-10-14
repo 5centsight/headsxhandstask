@@ -68,6 +68,33 @@ class GameViewModel : ViewModel() {
         }
     }
 
+    fun playerAttack(): BattleService.BattleResult {
+        val monster = _gameState.value.currentMonster ?: return BattleService.BattleResult.Miss
+        return BattleService.attack(_gameState.value.player, monster)
+    }
+
+    fun monsterAttack(): BattleService.BattleResult {
+        val monster = _gameState.value.currentMonster ?: return BattleService.BattleResult.Miss
+        return BattleService.attack(monster, _gameState.value.player)
+    }
+
+    fun nextMonster() {
+        val currentState = _gameState.value
+        val nextIndex = currentState.currentMonsterIndex + 1
+        val nextMonster = if (nextIndex < currentState.monsters.size) {
+            currentState.monsters[nextIndex]
+        } else {
+            null
+        }
+        _gameState.value = currentState.copy(
+            currentMonsterIndex = nextIndex,
+            currentMonster = nextMonster
+        )
+        nextMonster?.let {
+            addToLog("Вы встретили ${nextMonster.name}а")
+        }
+    }
+
     private fun handleAttackResult(attackerName: String, result: BattleService.BattleResult) {
         val currentState = _gameState.value
         when (result) {
@@ -137,33 +164,6 @@ class GameViewModel : ViewModel() {
                 maxHealth = 100,
                 damage = DamageRange(5, 15)
             )
-        }
-    }
-
-    fun playerAttack(): BattleService.BattleResult {
-        val monster = _gameState.value.currentMonster ?: return BattleService.BattleResult.Miss
-        return BattleService.attack(_gameState.value.player, monster)
-    }
-
-    fun monsterAttack(): BattleService.BattleResult {
-        val monster = _gameState.value.currentMonster ?: return BattleService.BattleResult.Miss
-        return BattleService.attack(monster, _gameState.value.player)
-    }
-
-    fun nextMonster() {
-        val currentState = _gameState.value
-        val nextIndex = currentState.currentMonsterIndex + 1
-        val nextMonster = if (nextIndex < currentState.monsters.size) {
-            currentState.monsters[nextIndex]
-        } else {
-            null
-        }
-        _gameState.value = currentState.copy(
-            currentMonsterIndex = nextIndex,
-            currentMonster = nextMonster
-        )
-        nextMonster?.let {
-            addToLog("Вы встретили ${nextMonster.name}а")
         }
     }
 

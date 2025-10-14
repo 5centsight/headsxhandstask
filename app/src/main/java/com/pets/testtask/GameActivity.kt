@@ -105,7 +105,7 @@ class GameActivity : AppCompatActivity() {
                 ${getString(R.string.defense)}: ${monster.defense}
             """.trimIndent()
         } ?: run {
-            monsterStatsTextView.text = "Все монстры побеждены!"
+            monsterStatsTextView.text = getString(R.string.monsters_defeated)
         }
 
         logTextView.text = state.gameLog.joinToString("\n")
