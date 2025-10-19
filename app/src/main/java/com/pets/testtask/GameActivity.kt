@@ -94,7 +94,6 @@ class GameActivity : AppCompatActivity() {
                 ${getString(R.string.defense)}: ${player.defense}
                 ${getString(R.string.heals_count)}: ${player.healCount}
             """.trimIndent()
-
         }
 
         state.currentMonster?.let { monster ->
