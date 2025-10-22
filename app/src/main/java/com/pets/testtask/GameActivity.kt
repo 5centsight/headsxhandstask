@@ -1,6 +1,5 @@
 package com.pets.testtask
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ScrollView
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class GameActivity : AppCompatActivity() {
 
-    private val viewModel: GameViewModel by viewModels()
+    private val gameViewModel: GameViewModel by viewModels()
     private lateinit var logTextView: TextView
     private lateinit var playerStatsTextView: TextView
     private lateinit var monsterStatsTextView: TextView
@@ -40,7 +39,7 @@ class GameActivity : AppCompatActivity() {
     private fun setupObservers() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.gameState.collect { state ->
+                gameViewModel.gameState.collect { state ->
                     updateUI(state)
                 }
             }
@@ -55,12 +54,12 @@ class GameActivity : AppCompatActivity() {
         attackButton = findViewById(R.id.attackButton)
         healButton = findViewById(R.id.healButton)
 
-        attackButton.setOnClickListener { viewModel.performAttack() }
-        healButton.setOnClickListener { viewModel.performHeal() }
+        attackButton.setOnClickListener { gameViewModel.performAttack() }
+        healButton.setOnClickListener { gameViewModel.performHeal() }
     }
 
     private fun startNewGame() {
-        viewModel.setupSession()
+        gameViewModel.setupSession()
     }
 
     private fun showGameOverDialog() {
@@ -83,29 +82,10 @@ class GameActivity : AppCompatActivity() {
             .show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun updateUI(state: GameState) {
 
-        state.player.let { player ->
-            playerStatsTextView.text = """
-                ${getString(R.string.player)}: ${player.name}
-                ${getString(R.string.health)}: ${player.health}/${player.maxHealth}
-                ${getString(R.string.damage)}: ${player.attack}
-                ${getString(R.string.defense)}: ${player.defense}
-                ${getString(R.string.heals_count)}: ${player.healCount}
-            """.trimIndent()
-        }
-
-        state.currentMonster?.let { monster ->
-            monsterStatsTextView.text = """
-                ${getString(R.string.monster)}: ${monster.name}
-                ${getString(R.string.health)}: ${monster.health}/${monster.maxHealth}
-                ${getString(R.string.damage)}: ${monster.attack}
-                ${getString(R.string.defense)}: ${monster.defense}
-            """.trimIndent()
-        } ?: run {
-            monsterStatsTextView.text = getString(R.string.monsters_defeated)
-        }
+        playerStatsTextView.text = state.playerStats
+        monsterStatsTextView.text = state.monsterStats
 
         logTextView.text = state.gameLog.joinToString("\n")
 

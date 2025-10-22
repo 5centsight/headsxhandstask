@@ -12,4 +12,23 @@ data class GameState(
     val gameLog: List<String> = emptyList(),
     val isGameOver: Boolean = false,
     val isVictory: Boolean = false
-)
+) {
+    val playerStats: String
+        get() = """
+            Игрок: ${player.name}
+            Здоровье: ${player.health}/${player.maxHealth}
+            Атака: ${player.attack}
+            Защита: ${player.defense}
+            Исцелений: ${player.healCount}
+        """.trimIndent()
+
+    val monsterStats: String
+        get() = currentMonster?.let { monster ->
+            """
+                Монстр: ${monster.name}
+                Здоровье: ${monster.health}/${monster.maxHealth}
+                Атака: ${monster.attack}
+                Защита: ${monster.defense}
+            """.trimIndent()
+        } ?: "Все монстры побеждены!"
+}
