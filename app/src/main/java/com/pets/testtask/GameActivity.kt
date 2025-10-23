@@ -1,15 +1,14 @@
 package com.pets.testtask
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ScrollView
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.pets.testtask.databinding.ActivityGameBinding
 import com.pets.testtask.state.GameState
 import com.pets.testtask.viewmodel.GameViewModel
 import kotlinx.coroutines.launch
@@ -17,17 +16,14 @@ import kotlinx.coroutines.launch
 
 class GameActivity : AppCompatActivity() {
 
-    private val gameViewModel: GameViewModel by viewModels()
-    private lateinit var logTextView: TextView
-    private lateinit var playerStatsTextView: TextView
-    private lateinit var monsterStatsTextView: TextView
-    private lateinit var attackButton: Button
-    private lateinit var healButton: Button
-    private lateinit var scrollView: ScrollView
+    private lateinit var binding: ActivityGameBinding
+
+    private val gameViewModel by viewModels<GameViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_game)
+        binding = ActivityGameBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupObservers()
         initializeViews()
 
@@ -47,15 +43,8 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
-        scrollView = findViewById(R.id.scrollView)
-        logTextView = findViewById(R.id.logTextView)
-        playerStatsTextView = findViewById(R.id.playerStatsTextView)
-        monsterStatsTextView = findViewById(R.id.monsterStatsTextView)
-        attackButton = findViewById(R.id.attackButton)
-        healButton = findViewById(R.id.healButton)
-
-        attackButton.setOnClickListener { gameViewModel.performAttack() }
-        healButton.setOnClickListener { gameViewModel.performHeal() }
+        binding.attackButton.setOnClickListener { gameViewModel.performAttack() }
+        binding.healButton.setOnClickListener { gameViewModel.performHeal() }
     }
 
     private fun startNewGame() {
@@ -84,17 +73,17 @@ class GameActivity : AppCompatActivity() {
 
     private fun updateUI(state: GameState) {
 
-        playerStatsTextView.text = state.playerStats
-        monsterStatsTextView.text = state.monsterStats
+        binding.playerStatsTextView.text = state.playerStats
+        binding.monsterStatsTextView.text = state.monsterStats
 
-        logTextView.text = state.gameLog.joinToString("\n")
+        binding.logTextView.text = state.gameLog.joinToString("\n")
 
-        attackButton.isEnabled = !state.isGameOver && !state.isVictory
-        healButton.isEnabled =
+        binding.attackButton.isEnabled = !state.isGameOver && !state.isVictory
+        binding.healButton.isEnabled =
             state.player.healCount > 0 && !state.isGameOver && !state.isVictory
 
-        scrollView.post {
-            scrollView.fullScroll(ScrollView.FOCUS_DOWN)
+        binding.scrollView.post {
+            binding.scrollView.fullScroll(ScrollView.FOCUS_DOWN)
         }
 
         if (state.isGameOver) {
