@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/menu_fragment">
+
+    <fragment
+        android:id="@+id/menu_fragment"
+        android:name="com.pets.testtask.fragments.MenuFragment"
+        android:label="MenuFragment"
+        tools:layout="@layout/fragment_menu">
+        <action
+            android:id="@+id/action_menuFragment_to_gameFragment"
+            app:destination="@id/game_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/game_fragment"
+        android:name="com.pets.testtask.fragments.GameFragment"
+        android:label="GameFragment"
+        tools:layout="@layout/fragment_game">
+        <action
+            android:id="@+id/action_gameFragment_to_menuFragment"
+            app:destination="@id/menu_fragment"
+            app:popUpTo="@id/menu_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>
