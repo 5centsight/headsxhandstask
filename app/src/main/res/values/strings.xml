@@ -18,4 +18,5 @@
     <string name="heals_count">Heals</string>
     <string name="monster">Monster</string>
     <string name="monsters_defeated">Every monsters are defeated!</string>
+    <string name="load_game">Load Game</string>
 </resources>

@@ -2,9 +2,8 @@ package com.pets.testtask.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pets.testtask.model.DamageRange
-import com.pets.testtask.model.Monster
-import com.pets.testtask.model.Player
+import com.pets.testtask.repository.GameRepository
+import com.pets.testtask.repository.GameRepositoryImpl
 import com.pets.testtask.service.BattleService
 import com.pets.testtask.state.GameState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,22 +12,27 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class GameViewModel : ViewModel() {
+class GameViewModel(
+    private val gameRepository: GameRepository = GameRepositoryImpl()
+) : ViewModel() {
 
     private val _gameState = MutableStateFlow(GameState())
     val gameState: StateFlow<GameState> = _gameState.asStateFlow()
 
     fun setupSession() {
-        val monsters = createMonsters()
-        _gameState.value = GameState(
-            player = createPlayer(),
-            monsters = monsters,
-            currentMonsterIndex = 0,
-            currentMonster = monsters.firstOrNull(),
-            isGameOver = false,
-            isVictory = false,
-            gameLog = listOf("Игра началась!", "Вы встретили ${monsters.firstOrNull()?.name}а")
-        )
+        viewModelScope.launch {
+            val player = gameRepository.createPlayer()
+            val monsters = gameRepository.createMonsters()
+            _gameState.value = GameState(
+                player = player,
+                monsters = monsters,
+                currentMonsterIndex = 0,
+                currentMonster = monsters.firstOrNull(),
+                isGameOver = false,
+                isVictory = false,
+                gameLog = listOf("Игра началась!", "Вы встретили ${monsters.firstOrNull()?.name}а")
+            )
+        }
     }
 
     fun performAttack() {
@@ -140,31 +144,6 @@ class GameViewModel : ViewModel() {
                 currentState.currentMonster
             }
         )
-    }
-
-    private fun createPlayer(): Player {
-        return Player(
-            name = "Герой",
-            attack = (1..30).random(),
-            defense = (1..30).random(),
-            health = 100,
-            maxHealth = 100,
-            damage = DamageRange(10, 20)
-        )
-    }
-
-    private fun createMonsters(): List<Monster> {
-        val monsterNames = listOf("Гоблин", "Орк", "Тролль", "Лич", "Дракон")
-        return monsterNames.map { name ->
-            Monster(
-                name = name,
-                attack = (1..30).random(),
-                defense = (1..30).random(),
-                health = 50 + (0..50).random(),
-                maxHealth = 100,
-                damage = DamageRange(5, 15)
-            )
-        }
     }
 
     private fun addToLog(message: String) {

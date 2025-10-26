@@ -59,6 +59,9 @@ class GameFragment : Fragment() {
     }
 
     private fun initializeViews() {
+        binding.quitButton.setOnClickListener {
+            findNavController().navigate(R.id.action_gameFragment_to_menuFragment)
+        }
         binding.attackButton.setOnClickListener { gameViewModel.performAttack() }
         binding.healButton.setOnClickListener { gameViewModel.performHeal() }
     }

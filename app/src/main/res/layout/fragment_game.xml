@@ -8,12 +8,21 @@
     android:padding="16dp"
     tools:context=".fragments.GameFragment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.7"
         android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/quit_button"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/quit"
+            app:icon="@drawable/baseline_keyboard_backspace_24"
+            app:layout_constraintEnd_toStartOf="@id/label"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/label"
@@ -22,6 +31,7 @@
             android:gravity="center_horizontal"
             android:text="@string/battle"
             android:textAppearance="@style/TextAppearance.Material3.DisplayMedium.Emphasized"
+            app:layout_constraintStart_toEndOf="@id/quit_button"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

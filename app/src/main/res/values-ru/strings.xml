@@ -19,4 +19,5 @@
     <string name="heals_count">Исцелений</string>
     <string name="monster">Монстр</string>
     <string name="monsters_defeated">Все монстры побеждены!</string>
+    <string name="load_game">Загрузить игру</string>
 </resources>
