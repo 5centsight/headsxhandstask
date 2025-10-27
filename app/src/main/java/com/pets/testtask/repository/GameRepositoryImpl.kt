@@ -3,10 +3,25 @@ package com.pets.testtask.repository
 import com.pets.testtask.model.DamageRange
 import com.pets.testtask.model.Monster
 import com.pets.testtask.model.Player
+import com.pets.testtask.state.GameState
 
 class GameRepositoryImpl : GameRepository {
 
-    override suspend fun createPlayer(): Player {
+    override suspend fun createNewGame(): GameState {
+        val player = createPlayer()
+        val monsters = createMonsters()
+        return GameState(
+            player = player,
+            monsters = monsters,
+            currentMonsterIndex = 0,
+            currentMonster = monsters.firstOrNull(),
+            isGameOver = false,
+            isVictory = false,
+            gameLog = listOf("Игра началась!", "Вы встретили ${monsters.firstOrNull()?.name}а")
+        )
+    }
+
+    private fun createPlayer(): Player {
         return Player(
             name = "Герой",
             attack = (1..30).random(),
@@ -17,7 +32,7 @@ class GameRepositoryImpl : GameRepository {
         )
     }
 
-    override suspend fun createMonsters(): List<Monster> {
+    private fun createMonsters(): List<Monster> {
         val monsterNames = listOf("Гоблин", "Орк", "Тролль", "Лич", "Дракон")
         return monsterNames.map { name ->
             Monster(

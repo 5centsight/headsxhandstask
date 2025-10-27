@@ -1,9 +1,7 @@
 package com.pets.testtask.repository
 
-import com.pets.testtask.model.Monster
-import com.pets.testtask.model.Player
+import com.pets.testtask.state.GameState
 
 interface GameRepository {
-    suspend fun createPlayer(): Player
-    suspend fun createMonsters(): List<Monster>
+    suspend fun createNewGame(): GameState
 }
